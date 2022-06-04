@@ -20,20 +20,35 @@
 /* Pstore:last kmsg */
 #include "components/memmap/msm8937-memory-pstore.dtsi"
 
-/* Disable Vendor partition */
-&firmware {
-  android {
-    fstab {
-      vendor {
-        status = "disabled";
-      };
-      system {
-        fsmgr_flags = "wait,verify";
-        status = "ok";
-      };
-    };
-  };
-};
+	firmware: firmware {
+
+		android {
+
+			fstab {
+
+				vendor {
+
+					dev = "/dev/block/platform/soc/7824900.sdhci/by-name/oem";
+					type = "squashfs";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "okay";
+				};
+
+				system {
+
+					compatible = "android,system";
+					dev = "/dev/block/platform/soc/7824900.sdhci/by-name/system";
+					type = "ext4";
+					mnt_flags = "ro,barrier=1,discard";
+					fsmgr_flags = "wait";
+					status = "okay";
+				};
+			};
+		};
+	};
+
+	reserved_memory: reserved-memory {
 
 &wled {
 	qcom,cons-sync-write-delay-us = <1000>;
